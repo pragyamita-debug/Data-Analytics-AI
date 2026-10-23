@@ -92,4 +92,20 @@ Research: Usability testing, Interviews`,
     expect(cv.education[0].rank).toBe(3);
     expect(cv.skills).toEqual(['Figma', 'Framer', 'Protopie', 'Usability testing', 'Interviews']);
   });
+
+  it('keeps un-bulleted descriptions with their role (Word CVs)', () => {
+    const cv = parseResume(
+      `Sam Patel
+Interaction Designer
+Experience
+Interaction Designer at Monzo
+Sep 2021 – Present
+Shipped the savings pots redesign
+Junior Designer — Ustwo | 2018 - 2021
+Worked on wellbeing apps`,
+      TODAY,
+    );
+    expect(cv.experience).toHaveLength(2);
+    expect(cv.experience[1]).toMatchObject({ role: 'Junior Designer', company: 'Ustwo', bullets: ['Worked on wellbeing apps'] });
+  });
 });

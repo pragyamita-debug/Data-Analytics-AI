@@ -182,6 +182,20 @@ function groupBlocks(lines: string[], today: Date): Block[] {
     }
     const range = findDateRange(line, today);
     const c = cur as Block | null;
+    // A plain sentence under a dated entry ("Shipped the savings redesign") is a description, not a new
+    // entry — common in Word CVs written without bullet points.
+    const isDescription =
+      c?.range &&
+      !range &&
+      !ROLE_WORDS.test(line) &&
+      !INSTITUTION_WORDS.test(line) &&
+      !/[|—–@·•]|\s-\s|,\s/.test(line) &&
+      line.split(/\s+/).length >= 3 &&
+      /^[A-Z][a-z]/.test(line);
+    if (isDescription) {
+      c!.body.push(line);
+      continue;
+    }
     const startNew =
       !c ||
       c.body.length > 0 ||
@@ -243,6 +257,10 @@ function parseExperience(lines: string[], today: Date): { items: Experience[]; m
 const DEGREES: { re: RegExp; rank: number; short?: string }[] = [
   { re: /\b(ph\.?\s?d|doctorate|doctor of philosophy)\b/i, rank: 6, short: 'Ph.D.' },
   { re: /\b(m\.?\s?phil)\b/i, rank: 5, short: 'M.Phil.' },
+  // healthcare degrees
+  { re: /\b(m\.?\s?d\.|mbbs|m\.?b\.?b\.?s\.?|pharm\.?\s?d|dnp|d\.?n\.?p\.|dpt)(?=\s|,|$|\))/i, rank: 6 },
+  { re: /\b(m\.?\s?h\.?\s?a\.?|m\.?\s?p\.?\s?h\.?|m\.?\s?s\.?\s?n\.?|m\.?\s?h\.?\s?s\.?)(?=\s|,|$|\))/i, rank: 4 },
+  { re: /\b(b\.?\s?s\.?\s?n\.?|bds|b\.?\s?pharm|bpt)(?=\s|,|$|\))/i, rank: 3 },
   { re: /\b(mba|pgdm)\b/i, rank: 4 },
   { re: /\b(m\.\s?a\.?|ma)(?=\s|,|$|\s*\()/i, rank: 4, short: 'M.A.' },
   { re: /\b(m\.?\s?sc\.?|m\.?\s?com\.?|m\.?\s?tech|m\.?\s?des|mca|m\.?\s?e\.)(?=\s|,|$)/i, rank: 4 },
