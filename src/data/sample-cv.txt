@@ -1,0 +1,60 @@
+ALEX MORGAN
+Data Analyst | Applied AI
+Turning messy data into decisions people can act on.
+alex.morgan@example.com | +1 415 555 0142 | Bengaluru, India | linkedin.com/in/alex-morgan-example | github.com/alex-morgan-example
+
+PROFILE
+Data analyst with 4+ years of experience building dashboards, forecasting models and ML prototypes for product and operations teams. I like work where a model ends up inside a real workflow, not just a notebook.
+
+EXPERIENCE
+Senior Data Analyst — Northwind Analytics | Mar 2023 – Present
+• Built a demand-forecasting pipeline in Python and dbt that cut stock-outs by 18%.
+• Rolled out a self-serve Power BI workspace used by 120+ people across four teams.
+• Mentor two junior analysts and run the weekly metrics review.
+
+Data Analyst — Contoso Retail | Jul 2021 – Feb 2023
+• Designed the customer-churn model and the experiment framework for pricing tests.
+• Automated 30+ weekly reports with SQL and Airflow.
+
+Analytics Intern — Fabrikam Labs | Jan 2021 – Jun 2021
+• Cleaned and labelled sensor data for an anomaly-detection prototype.
+
+EDUCATION
+M.Sc. in Data Science — University of Example | 2021
+B.Tech in Computer Science — Example Institute of Technology | 2019
+
+SKILLS
+Python, SQL, Power BI, Machine Learning, Forecasting, dbt, Airflow, Statistics, A/B Testing, Data Storytelling
+
+PROJECTS
+Demand Forecasting Engine
+• Weekly SKU-level forecasts feeding the replenishment system.
+• Tech: Python, Prophet, dbt
+Churn Early-Warning Model
+• Gradient-boosted model flagging at-risk customers two months ahead.
+• Tech: scikit-learn, SQL
+Ops Command Dashboard
+• Real-time operations dashboard for warehouse leads.
+• Tech: Power BI, Airflow
+Sensor Anomaly Detector
+• Unsupervised detection of faulty readings on IoT sensors.
+• Tech: PyTorch, Time Series
+
+ACHIEVEMENTS
+Northwind Analytics Impact Award 2024
+Top 5% finish, Kaggle Store Sales forecasting competition
+
+CERTIFICATIONS
+Google Professional Data Engineer
+Microsoft Power BI Data Analyst Associate
+
+GOALS
+Goal: Lead an applied ML team (within two years)
+Next Step: Ship the forecasting engine to all regions
+Timeline: Target: Q4 2027
+
+MOTTO
+Sense the data. Think it through. Act on it.
+
+INTERESTS
+Time series, MLOps, Data visualisation

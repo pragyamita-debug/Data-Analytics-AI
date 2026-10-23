@@ -1,0 +1,119 @@
+@property --angle {
+  syntax: '<angle>';
+  inherits: true;
+  initial-value: 0deg;
+}
+
+.glow-card {
+  --glow: var(--green);
+  --mx: 50%;
+  --my: 50%;
+  --rx: 0deg;
+  --ry: 0deg;
+  position: relative;
+  isolation: isolate;
+  border-radius: var(--radius);
+  background: linear-gradient(160deg, rgba(255, 255, 255, 0.035), rgba(255, 255, 255, 0.008));
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.05),
+    0 10px 30px -18px rgba(0, 0, 0, 0.8);
+  transform: perspective(900px) rotateX(var(--rx)) rotateY(var(--ry));
+  transition:
+    transform 0.35s var(--ease-out),
+    box-shadow 0.35s var(--ease-out),
+    translate 0.35s var(--ease-out);
+  animation: glow-spin var(--spin, 7s) linear infinite;
+  animation-delay: var(--phase, 0s);
+}
+.glow-card--blue   { --glow: var(--blue); }
+.glow-card--purple { --glow: var(--purple); }
+.glow-card--teal   { --glow: var(--teal); }
+.glow-card--amber  { --glow: var(--amber); }
+
+@keyframes glow-spin {
+  to { --angle: 360deg; }
+}
+
+/* Static hairline + the travelling light, cut to a 1px ring by the mask. */
+.glow-card__ring {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  pointer-events: none;
+  background:
+    conic-gradient(
+      from var(--angle),
+      transparent 0deg,
+      transparent 230deg,
+      color-mix(in srgb, var(--glow) 35%, transparent) 285deg,
+      var(--glow) 330deg,
+      #fff 348deg,
+      transparent 360deg
+    ),
+    linear-gradient(rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.1));
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+}
+
+/* Same ring, blurred, so the light actually blooms past the edge. */
+.glow-card__halo {
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  filter: blur(7px);
+  opacity: 0.55;
+  pointer-events: none;
+  transition: opacity 0.4s;
+}
+.glow-card__halo .glow-card__ring {
+  padding: 2px;
+  background: conic-gradient(
+    from var(--angle),
+    transparent 0deg,
+    transparent 270deg,
+    var(--glow) 335deg,
+    transparent 360deg
+  );
+}
+
+.glow-card__spot {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  opacity: 0;
+  background: radial-gradient(
+    420px circle at var(--mx) var(--my),
+    color-mix(in srgb, var(--glow) 16%, transparent),
+    transparent 45%
+  );
+  transition: opacity 0.35s;
+}
+
+.glow-card__body {
+  position: relative;
+  height: 100%;
+}
+
+.glow-card:hover,
+.glow-card.is-active {
+  translate: 0 -4px;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.07),
+    0 22px 40px -22px color-mix(in srgb, var(--glow) 55%, black);
+}
+.glow-card:hover .glow-card__halo,
+.glow-card.is-active .glow-card__halo { opacity: 1; }
+.glow-card:hover .glow-card__spot { opacity: 1; }
+.glow-card.is-active .glow-card__spot {
+  opacity: 1;
+  background: radial-gradient(120% 90% at 50% 0%, color-mix(in srgb, var(--glow) 18%, transparent), transparent 70%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .glow-card { animation: none; transform: none; --angle: 300deg; }
+}

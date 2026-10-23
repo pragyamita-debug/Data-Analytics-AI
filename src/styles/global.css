@@ -1,0 +1,265 @@
+/* Theme: studio black, brushed silver, glass — with a single warm orange accent */
+:root {
+  color-scheme: dark;
+
+  --bg: #050608;
+  --bg-2: #0a0c10;
+  --surface: rgba(255, 255, 255, 0.025);
+  --surface-2: rgba(255, 255, 255, 0.05);
+  --line: rgba(255, 255, 255, 0.09);
+  --line-strong: rgba(255, 255, 255, 0.18);
+
+  --text: #f1f3f6;
+  --text-2: #b7bcc5;
+  --muted: #7d838e;
+  --dim: #5a5f69;
+
+  --silver: #d9dee6;
+  --accent: #ff6a1f; /* the orange clips on the hardware */
+  --accent-soft: #ffb07a;
+
+  /* GlowCard light colours */
+  --green: #e8edf5;
+  --blue: #a9c4ff;
+  --teal: #c9d4e4;
+  --purple: #c8b8ff;
+  --amber: #ff8a3d;
+
+  --radius: 6px;
+  --radius-sm: 4px;
+  --nav: 72px;
+  --page: 1240px;
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+
+  --font: 'Inter Tight', 'Inter', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: calc(var(--nav) + 8px);
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font);
+  font-size: 15px;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4, p { margin: 0; }
+h1, h2 { text-wrap: balance; }
+a { color: inherit; text-decoration: none; }
+button, input, textarea { font: inherit; color: inherit; }
+button { cursor: pointer; }
+img { display: block; max-width: 100%; }
+::selection { background: rgba(255, 106, 31, 0.35); }
+
+:focus-visible {
+  outline: 1.5px solid var(--silver);
+  outline-offset: 3px;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+.wrap {
+  width: 100%;
+  max-width: var(--page);
+  margin: 0 auto;
+  padding-left: max(24px, env(safe-area-inset-left, 0px));
+  padding-right: max(24px, env(safe-area-inset-right, 0px));
+}
+
+/* ---------- type ---------- */
+
+/* small, wide-tracked uppercase labels used all over the design */
+.label {
+  display: block;
+  color: var(--muted);
+  font-size: 10.5px;
+  font-weight: 500;
+  letter-spacing: 0.28em;
+  line-height: 1.7;
+  text-transform: uppercase;
+}
+.label--bright { color: var(--text-2); }
+
+.display {
+  font-weight: 400;
+  letter-spacing: -0.035em;
+  line-height: 1.02;
+}
+.display .dim { color: #8c919b; }
+
+.title {
+  font-size: clamp(30px, 3.4vw, 44px);
+  font-weight: 400;
+  letter-spacing: -0.03em;
+  line-height: 1.06;
+}
+
+/* ---------- controls ---------- */
+
+.pill {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  height: 44px;
+  padding: 0 22px;
+  border-radius: 999px;
+  border: 1px solid transparent;
+  background: #eef0f3;
+  color: #0b0c0f;
+  font-size: 14px;
+  font-weight: 500;
+  overflow: hidden;
+  isolation: isolate;
+  transition: transform 0.3s var(--ease-out), box-shadow 0.3s, background 0.3s;
+}
+.pill svg { transition: transform 0.3s var(--ease-out); }
+.pill:hover { background: #fff; box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.08), 0 12px 30px -10px rgba(255, 255, 255, 0.35); }
+.pill:hover svg { transform: translate(2px, -2px); }
+.pill:active { transform: scale(0.97); }
+.pill--sm { height: 36px; padding: 0 16px; font-size: 13px; }
+.pill--ghost { background: transparent; color: var(--text); border-color: var(--line-strong); }
+.pill--ghost:hover { background: rgba(255, 255, 255, 0.06); box-shadow: none; }
+
+/* light sweeping across the solid pill */
+.pill:not(.pill--ghost)::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(105deg, transparent 35%, rgba(255, 255, 255, 0.9) 50%, transparent 65%);
+  transform: translateX(-130%);
+  animation: sheen 5s var(--ease-out) infinite;
+}
+@keyframes sheen {
+  0%, 60% { transform: translateX(-130%); }
+  100% { transform: translateX(130%); }
+}
+
+.text-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+  color: var(--text);
+}
+.text-link svg { transition: transform 0.3s var(--ease-out); }
+.text-link:hover svg { transform: translate(2px, -2px); }
+
+.round {
+  display: inline-grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  border: 1px solid var(--line-strong);
+  color: var(--text-2);
+  transition: border-color 0.3s, color 0.3s, transform 0.3s var(--ease-out), background 0.3s;
+}
+
+.icon-btn {
+  display: inline-grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  border: 1px solid var(--line-strong);
+  background: transparent;
+  transition: background 0.2s, border-color 0.2s, transform 0.2s;
+}
+.icon-btn:hover { background: rgba(255, 255, 255, 0.07); border-color: rgba(255, 255, 255, 0.35); }
+.icon-btn:active { transform: scale(0.94); }
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 12px;
+  border-radius: 999px;
+  border: 1px solid var(--line-strong);
+  font-size: 12.5px;
+  color: var(--text-2);
+  transition: border-color 0.25s, color 0.25s, background 0.25s;
+}
+.chip:hover { border-color: rgba(255, 255, 255, 0.4); color: var(--text); background: rgba(255, 255, 255, 0.04); }
+
+.empty {
+  padding: 22px;
+  border: 1px dashed var(--line-strong);
+  color: var(--muted);
+  text-align: center;
+  font-size: 14px;
+}
+
+/* corner ticks on the cards, like the frames in the design */
+.ticks { position: relative; }
+.ticks::before,
+.ticks::after {
+  content: '';
+  position: absolute;
+  width: 9px;
+  height: 9px;
+  border-color: rgba(255, 255, 255, 0.45);
+  border-style: solid;
+  pointer-events: none;
+  z-index: 2;
+}
+.ticks::before { top: 8px; right: 8px; border-width: 1px 1px 0 0; }
+.ticks::after { bottom: 8px; right: 8px; border-width: 0 1px 1px 0; }
+
+/* ---------- motion ---------- */
+
+.reveal {
+  opacity: 0;
+  translate: 0 22px;
+  transition: opacity 0.9s var(--ease-out), translate 0.9s var(--ease-out);
+  transition-delay: var(--d, 0ms);
+}
+.reveal.is-in { opacity: 1; translate: 0 0; }
+
+/* silver light sweeping across a heading */
+.shimmer {
+  background: linear-gradient(100deg, currentColor 0%, currentColor 40%, #ffffff 47%, #ffd2b3 52%, currentColor 60%, currentColor 100%);
+  background-size: 260% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: shimmer 7s ease-in-out infinite;
+}
+@keyframes shimmer {
+  0% { background-position: 100% 0; }
+  55%, 100% { background-position: 0% 0; }
+}
+
+@keyframes float { 50% { transform: translateY(-6px); } }
+
+.is-flash { animation: flash 1.4s var(--ease-out); }
+@keyframes flash {
+  0%, 40% { box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.6), 0 0 40px rgba(255, 255, 255, 0.15); }
+  100% { box-shadow: 0 0 0 1px transparent; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .reveal { opacity: 1; translate: none; transition: none; }
+  .shimmer, .pill::after { animation: none; }
+}

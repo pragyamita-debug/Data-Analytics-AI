@@ -1,0 +1,176 @@
+.hero {
+  --px: 0;
+  --py: 0;
+  position: relative;
+  isolation: isolate;
+  min-height: min(760px, 100vh);
+  margin-top: calc(-1 * var(--nav));
+  padding-top: var(--nav);
+  overflow: hidden;
+  border-bottom: 1px solid var(--line);
+  background: radial-gradient(70% 90% at 70% 40%, #12151b 0%, var(--bg) 70%);
+}
+
+/* ---------- photo ---------- */
+
+.hero__visual {
+  position: absolute;
+  z-index: -1;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: min(64%, 900px);
+  transform: translate(calc(var(--px) * -12px), calc(var(--py) * -8px));
+  transition: transform 0.9s var(--ease-out);
+  /* fade the photo into the black page on every side */
+  -webkit-mask: linear-gradient(90deg, transparent 0%, #000 34%), radial-gradient(85% 95% at 55% 45%, #000 52%, transparent 88%);
+  -webkit-mask-composite: source-in;
+  mask: linear-gradient(90deg, transparent 0%, #000 34%), radial-gradient(85% 95% at 55% 45%, #000 52%, transparent 88%);
+  mask-composite: intersect;
+}
+.hero__visual img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 40% 50%;
+  animation: hover-arm 9s ease-in-out infinite;
+}
+/* the arm "holds" the module: a slow, weighty bob */
+@keyframes hover-arm {
+  50% { transform: translateY(-1.2%) scale(1.015); }
+}
+.hero__beam {
+  position: absolute;
+  left: 22%;
+  top: 0;
+  width: 46%;
+  height: 100%;
+  background: radial-gradient(40% 55% at 50% 62%, rgba(190, 215, 255, 0.22), transparent 70%);
+  mix-blend-mode: screen;
+  animation: beam 6s ease-in-out infinite;
+}
+@keyframes beam { 50% { opacity: 0.45; } }
+.hero__scan {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent 0%, rgba(255, 255, 255, 0.07) 49%, rgba(255, 255, 255, 0.18) 50%, rgba(255, 255, 255, 0.07) 51%, transparent 100%) no-repeat;
+  background-size: 100% 40%;
+  mix-blend-mode: screen;
+  animation: scan 7s cubic-bezier(0.6, 0, 0.3, 1) infinite;
+}
+@keyframes scan {
+  0%, 40% { background-position: 0 -60%; }
+  100% { background-position: 0 180%; }
+}
+
+/* ---------- layout ---------- */
+
+.hero__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 150px;
+  gap: 32px;
+  min-height: calc(min(760px, 100vh) - var(--nav));
+  padding-top: 36px;
+  padding-bottom: 40px;
+}
+.hero__main { display: grid; align-content: space-between; gap: 30px; max-width: 560px; }
+
+.hero__where { display: grid; position: relative; width: max-content; padding-right: 110px; }
+.hero__rule {
+  position: absolute;
+  right: 0;
+  bottom: 9px;
+  width: 92px;
+  height: 1px;
+  background: linear-gradient(90deg, var(--muted), transparent);
+  transform-origin: left;
+  animation: rule-in 1.4s 0.3s var(--ease-out) both;
+}
+@keyframes rule-in { from { transform: scaleX(0); } }
+
+.hero__title { display: grid; font-size: clamp(44px, 5.8vw, 80px); }
+.hero__line { display: block; animation: line-in 1.1s var(--ease-out) both; }
+.hero__line:nth-child(2) { animation-delay: 0.1s; }
+.hero__line:nth-child(3) { animation-delay: 0.2s; }
+@keyframes line-in {
+  from { opacity: 0; transform: translateY(28px); filter: blur(8px); }
+}
+.hero__intro { max-width: 380px; color: var(--text-2); font-size: 15.5px; line-height: 1.6; animation: line-in 1.1s 0.3s var(--ease-out) both; }
+.hero__actions { display: flex; flex-wrap: wrap; align-items: center; gap: 26px; animation: line-in 1.1s 0.4s var(--ease-out) both; }
+.hero__actions .text-link { border: 0; background: none; padding: 0; }
+
+/* ---------- experience counter ("01 ——— SENSE THINK ACT") ---------- */
+
+.hero__counter { display: flex; align-items: center; gap: 16px; }
+.hero__dot {
+  position: relative;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  border: 1px solid var(--line-strong);
+}
+.hero__dot::after {
+  content: '';
+  position: absolute;
+  inset: 4px;
+  border-radius: 50%;
+  background: var(--text);
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+  animation: dot 2.4s ease-in-out infinite;
+}
+@keyframes dot { 50% { transform: scale(0.6); opacity: 0.6; } }
+.hero__counter b { font-size: 30px; font-weight: 400; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; min-width: 2.4ch; }
+.hero__counter i { font-style: normal; color: var(--accent); display: inline-block; opacity: 0; transform: translateY(6px); transition: opacity 0.4s, transform 0.5s var(--ease-out); }
+.hero__counter i.is-on { opacity: 1; transform: none; }
+.hero__counter-line {
+  width: 110px;
+  height: 1px;
+  background: var(--line-strong);
+  position: relative;
+  overflow: hidden;
+}
+.hero__counter-line::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  width: 40%;
+  background: linear-gradient(90deg, transparent, #fff, transparent);
+  animation: run 2.8s linear infinite;
+}
+@keyframes run { from { transform: translateX(-100%); } to { transform: translateX(260%); } }
+
+/* ---------- right column ---------- */
+
+.hero__side { display: grid; align-content: start; gap: 42px; padding-top: 36px; }
+.hero__list { position: relative; margin: 0; padding: 0 0 0 16px; list-style: none; }
+.hero__list::before { content: ''; position: absolute; left: 0; top: 4px; bottom: -42px; width: 1px; background: linear-gradient(var(--text-2), transparent); }
+.hero__list::after { content: ''; position: absolute; left: -2px; top: 2px; width: 5px; height: 5px; border-radius: 50%; background: var(--text); }
+.hero__motto { display: grid; padding-left: 16px; }
+
+.hero__wave {
+  position: relative;
+  margin-top: 22px;
+  width: 150px;
+  aspect-ratio: 1.1;
+  border: 1px solid var(--line);
+  background: rgba(8, 10, 14, 0.6);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+.hero__wave-canvas { position: absolute; inset: 0; width: 100%; height: 72%; }
+.hero__wave .label { position: absolute; left: 10px; bottom: 8px; font-size: 8.5px; letter-spacing: 0.24em; }
+.hero__wave-slash { position: absolute; right: 12px; bottom: 6px; color: var(--text-2); font-size: 18px; font-weight: 300; }
+
+@media (max-width: 980px) {
+  .hero__grid { grid-template-columns: 1fr; }
+  .hero__side { display: none; }
+  .hero__visual { width: 100%; opacity: 0.32; }
+}
+@media (max-width: 560px) {
+  .hero__where { padding-right: 60px; }
+  .hero__rule { width: 48px; }
+  .hero__counter-line { width: 56px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero__visual img, .hero__beam, .hero__scan, .hero__dot::after, .hero__counter-line::after { animation: none; }
+}
