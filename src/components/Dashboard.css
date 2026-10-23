@@ -234,22 +234,109 @@
   border-top: 1px solid var(--line);
   overflow: hidden;
 }
-.process__earth { position: absolute; left: 0; right: 0; bottom: 0; height: 64%; z-index: -1; }
+.process__earth { position: absolute; left: 0; right: 0; bottom: 0; height: 380px; z-index: -1; }
 .process__earth img {
   width: 100%;
   height: 100%;
   object-fit: cover;
   object-position: 50% 0;
+  transform-origin: 50% 0; /* top edge stays put under the fade while it zooms */
   animation: earth 30s ease-in-out infinite alternate;
 }
-@keyframes earth { to { transform: scale(1.05) translateY(-1%); } }
+@keyframes earth { to { transform: scale(1.05); } }
 .process__earth::before {
   content: '';
   position: absolute;
   inset: 0;
   z-index: 1;
-  background: linear-gradient(180deg, var(--bg) 0%, var(--bg) 6%, transparent 34%, transparent 70%, rgba(5, 6, 8, 0.6) 100%);
+  background: linear-gradient(180deg, var(--bg) 0%, rgba(5, 6, 8, 0.85) 5%, rgba(5, 6, 8, 0.2) 22%, transparent 34%, transparent 70%, rgba(5, 6, 8, 0.6) 100%);
 }
+/* ---- rising sun ----
+   --horizon: where the planet's edge sits inside the earth photo (from the top) */
+.sunrise {
+  --horizon: 7%;
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  mix-blend-mode: screen;
+}
+/* everything below the horizon is clipped, so the disc rises out from behind the planet */
+.sunrise__clip {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: -220px;
+  height: calc(220px + var(--horizon));
+  overflow: hidden;
+}
+.sunrise__disc {
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  width: 260px;
+  height: 260px;
+  margin-left: -130px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #fffaf0 0%, #fff1d6 9%, rgba(255, 196, 120, 0.85) 18%, rgba(255, 140, 60, 0.35) 36%, transparent 68%);
+  animation: sun-up 14s cubic-bezier(0.25, 0.6, 0.3, 1) infinite;
+}
+@keyframes sun-up {
+  0%   { transform: translateY(78%) scale(0.9); opacity: 0.2; }
+  45%  { transform: translateY(46%) scale(1); opacity: 1; }
+  80%  { transform: translateY(40%) scale(1.03); opacity: 1; }
+  100% { transform: translateY(78%) scale(0.9); opacity: 0.2; }
+}
+/* the atmosphere rim catching the light, widest right at the sun */
+.sunrise__rim {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: calc(var(--horizon) - 18px);
+  height: 36px;
+  background: radial-gradient(48% 50% at 50% 50%, rgba(255, 214, 160, 0.75), rgba(160, 200, 255, 0.25) 45%, transparent 75%);
+  filter: blur(4px);
+  animation: rim 14s ease-in-out infinite;
+}
+@keyframes rim {
+  0%, 100% { opacity: 0.25; transform: scaleX(0.6); }
+  45%, 80% { opacity: 1; transform: scaleX(1); }
+}
+/* thin horizontal lens flare */
+.sunrise__flare {
+  position: absolute;
+  left: 15%;
+  right: 15%;
+  top: calc(var(--horizon) - 1px);
+  height: 2px;
+  background: linear-gradient(90deg, transparent, rgba(255, 230, 190, 0.9) 50%, transparent);
+  box-shadow: 0 0 18px 4px rgba(255, 200, 140, 0.35);
+  animation: rim 14s ease-in-out infinite;
+}
+/* faint rays fanning up from the sun */
+.sunrise__rays {
+  position: absolute;
+  left: 50%;
+  top: var(--horizon);
+  width: 900px;
+  height: 900px;
+  margin: -450px 0 0 -450px;
+  -webkit-mask: radial-gradient(circle, #000 0%, transparent 45%), linear-gradient(#000 50%, transparent 50%);
+  -webkit-mask-composite: source-in;
+  mask: radial-gradient(circle, #000 0%, transparent 45%), linear-gradient(#000 50%, transparent 50%);
+  mask-composite: intersect;
+  animation: rim 14s ease-in-out infinite;
+}
+/* the rays turn inside the fixed mask, so they never dip below the horizon */
+.sunrise__rays::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: repeating-conic-gradient(from 0deg, rgba(255, 225, 180, 0.09) 0deg 2deg, transparent 2deg 11deg);
+  animation: rays-turn 80s linear infinite;
+}
+@keyframes rays-turn { to { rotate: 360deg; } }
+
 /* city lights twinkling on the night side */
 .process__lights {
   position: absolute;
@@ -325,7 +412,7 @@
   display: grid;
   justify-items: center;
   gap: 18px;
-  padding: 150px 24px 70px;
+  padding: 300px 24px 70px;
   text-align: center;
 }
 .process__cta .label { font-size: 12px; letter-spacing: 0.32em; }
@@ -390,6 +477,7 @@
   .footer__links { margin-left: 0; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .tech__module, .tech__wire::after, .process__earth img, .process__lights { animation: none; }
+  .tech__module, .tech__wire::after, .process__earth img, .process__lights, .sunrise *, .sunrise__rays::before { animation: none; }
+  .sunrise__disc { transform: translateY(44%); }
   .step.is-active .step__line span { animation: none; transform: scaleX(1); }
 }

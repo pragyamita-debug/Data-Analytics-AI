@@ -9,13 +9,15 @@ const IDS = NAV.map((n) => n.id);
 
 interface Props {
   profile: StoredProfile;
+  /** true while the page shows the placeholder profile (no CV uploaded yet) */
+  isExample?: boolean;
   onUploadNew: () => void;
   onEdit: () => void;
   onReset: () => void;
   onDownloadCv: () => void;
 }
 
-export function Dashboard({ profile, onUploadNew, onEdit, onReset, onDownloadCv }: Props) {
+export function Dashboard({ profile, isExample = false, onUploadNew, onEdit, onReset, onDownloadCv }: Props) {
   const { resume } = profile;
   const active = useScrollSpy(IDS, 160);
 
@@ -26,13 +28,14 @@ export function Dashboard({ profile, onUploadNew, onEdit, onReset, onDownloadCv 
         headline={resume.headline}
         email={resume.email}
         active={active}
+        isExample={isExample}
         onUploadNew={onUploadNew}
         onEdit={onEdit}
         onDownloadCv={onDownloadCv}
         onReset={onReset}
       />
       <main>
-        <Hero resume={resume} onDownloadCv={onDownloadCv} />
+        <Hero resume={resume} onDownloadCv={onDownloadCv} isExample={isExample} onUpload={onUploadNew} />
         <StatStrip resume={resume} />
         <ProfileSection resume={resume} onDownloadCv={onDownloadCv} />
         <ProjectsSection resume={resume} />

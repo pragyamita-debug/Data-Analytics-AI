@@ -174,3 +174,21 @@
 @media (prefers-reduced-motion: reduce) {
   .hero__visual img, .hero__beam, .hero__scan, .hero__dot::after, .hero__counter-line::after { animation: none; }
 }
+
+/* ---------- "this is an example" hint ---------- */
+
+.hero__example {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  justify-self: start;
+  padding: 7px 14px;
+  border-radius: 999px;
+  border: 1px solid var(--line-strong);
+  background: rgba(255, 255, 255, 0.03);
+  color: var(--text-2);
+  font-size: 12px;
+  transition: border-color 0.3s, color 0.3s, background 0.3s;
+}
+.hero__example:hover { color: var(--text); border-color: rgba(255, 255, 255, 0.4); background: rgba(255, 255, 255, 0.06); }
+.hero__example-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 8px var(--accent); animation: dot 2s ease-in-out infinite; }

@@ -13,13 +13,14 @@ interface Props {
   headline: string;
   email?: string;
   active: string;
+  isExample?: boolean;
   onUploadNew: () => void;
   onEdit: () => void;
   onDownloadCv: () => void;
   onReset: () => void;
 }
 
-export function NavBar({ name, headline, email, active, onUploadNew, onEdit, onDownloadCv, onReset }: Props) {
+export function NavBar({ name, headline, email, active, isExample = false, onUploadNew, onEdit, onDownloadCv, onReset }: Props) {
   const [menu, setMenu] = useState(false);
   const [mobile, setMobile] = useState(false);
   const [scrolled, setScrolled] = useState(false);
@@ -42,12 +43,17 @@ export function NavBar({ name, headline, email, active, onUploadNew, onEdit, onD
     };
   }, []);
 
-  const actions = [
-    { label: 'Upload another CV', icon: 'upload' as const, fn: onUploadNew },
-    { label: 'Edit details', icon: 'edit' as const, fn: onEdit },
-    { label: 'Download CV', icon: 'download' as const, fn: onDownloadCv },
-    { label: 'Start over', icon: 'refresh' as const, fn: onReset },
-  ];
+  const actions = isExample
+    ? [
+        { label: 'Upload a CV', icon: 'upload' as const, fn: onUploadNew },
+        { label: 'Download sample CV', icon: 'download' as const, fn: onDownloadCv },
+      ]
+    : [
+        { label: 'Upload another CV', icon: 'upload' as const, fn: onUploadNew },
+        { label: 'Edit details', icon: 'edit' as const, fn: onEdit },
+        { label: 'Download CV', icon: 'download' as const, fn: onDownloadCv },
+        { label: 'Back to the example', icon: 'refresh' as const, fn: onReset },
+      ];
 
   return (
     <header ref={ref} className={`nav ${scrolled ? 'is-scrolled' : ''}`}>
@@ -90,9 +96,15 @@ export function NavBar({ name, headline, email, active, onUploadNew, onEdit, onD
               </ul>
             )}
           </div>
-          <a className="pill pill--sm nav__cta" href={email ? `mailto:${email}` : '#contact'}>
-            Get in touch <Icon name="arrowUpRight" size={14} />
-          </a>
+          {isExample ? (
+            <button className="pill pill--sm nav__cta" onClick={onUploadNew}>
+              Upload CV <Icon name="upload" size={14} />
+            </button>
+          ) : (
+            <a className="pill pill--sm nav__cta" href={email ? `mailto:${email}` : '#contact'}>
+              Get in touch <Icon name="arrowUpRight" size={14} />
+            </a>
+          )}
           <button className="icon-btn nav__burger" aria-label="Open menu" aria-expanded={mobile} onClick={() => setMobile((m) => !m)}>
             <Icon name={mobile ? 'close' : 'menu'} size={16} />
           </button>

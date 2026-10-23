@@ -1,4 +1,5 @@
 import { useCallback, useState } from 'react';
+import { placeholder } from './data/placeholder';
 import sampleCv from './data/sample-cv.txt?raw';
 import { Dashboard } from './components/Dashboard';
 import { ReviewDialog } from './components/ReviewDialog';
@@ -24,7 +25,8 @@ function downloadBlob(href: string, name: string) {
 
 export default function App() {
   const [profile, setProfile] = useState<StoredProfile | null>(() => loadProfile());
-  const [stage, setStage] = useState<Stage>(() => (profile ? 'dashboard' : 'upload'));
+  // open on the dashboard; before a CV is uploaded it shows the placeholder profile
+  const [stage, setStage] = useState<Stage>('dashboard');
   const [step, setStep] = useState(0);
   const [error, setError] = useState<string | null>(null);
   const [draft, setDraft] = useState<{ resume: Resume; file?: StoredProfile['file'] } | null>(null);
@@ -63,6 +65,8 @@ export default function App() {
     }
   }, []);
 
+  const example: StoredProfile = { resume: placeholder, updatedAt: 0 };
+
   const confirm = (resume: Resume) => {
     commit({ resume, file: draft?.file ?? profile?.file, photo: profile?.photo, updatedAt: Date.now() });
     setDraft(null);
@@ -77,18 +81,21 @@ export default function App() {
 
   return (
     <>
-      {stage === 'dashboard' && profile ? (
+      {stage === 'dashboard' || stage === 'review' ? (
         <Dashboard
-          profile={profile}
+          profile={profile ?? example}
+          isExample={!profile}
           onUploadNew={() => setStage('upload')}
           onEdit={() => {
-            setDraft({ resume: profile.resume, file: profile.file });
+            const current = profile ?? example;
+            setDraft({ resume: current.resume, file: current.file });
             setStage('review');
           }}
           onReset={() => {
             clearProfile();
             setProfile(null);
-            setStage('upload');
+            setStage('dashboard');
+            window.scrollTo({ top: 0 });
           }}
           onDownloadCv={downloadCv}
         />
@@ -100,7 +107,7 @@ export default function App() {
           onFile={process}
           onSample={() => process(null)}
           onDownloadSample={() => downloadBlob(URL.createObjectURL(new Blob([sampleCv], { type: 'text/plain' })), 'sample-cv.txt')}
-          onCancel={profile ? () => setStage('dashboard') : undefined}
+          onCancel={() => setStage('dashboard')}
         />
       )}
 
@@ -111,7 +118,7 @@ export default function App() {
           onConfirm={confirm}
           onCancel={() => {
             setDraft(null);
-            setStage(profile ? 'dashboard' : 'upload');
+            setStage('dashboard');
           }}
         />
       )}

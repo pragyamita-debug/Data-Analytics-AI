@@ -17,7 +17,14 @@ function stack(text: string, lines = 3) {
   return Array.from({ length: Math.ceil(words.length / per) }, (_, i) => words.slice(i * per, (i + 1) * per).join(' '));
 }
 
-export function Hero({ resume, onDownloadCv }: { resume: Resume; onDownloadCv: () => void }) {
+interface Props {
+  resume: Resume;
+  onDownloadCv: () => void;
+  isExample?: boolean;
+  onUpload?: () => void;
+}
+
+export function Hero({ resume, onDownloadCv, isExample = false, onUpload }: Props) {
   const ref = useRef<HTMLElement>(null);
   const [countRef, counting] = useInView<HTMLDivElement>(0.4);
   const years = useCountUp(resume.stats.years, counting, { duration: 2200, delay: 500 });
@@ -47,6 +54,13 @@ export function Hero({ resume, onDownloadCv }: { resume: Resume; onDownloadCv: (
 
       <div className="wrap hero__grid">
         <div className="hero__main">
+          {isExample && (
+            <button className="hero__example" onClick={onUpload}>
+              <span className="hero__example-dot" aria-hidden />
+              Example dashboard — upload a CV to make it yours
+              <Icon name="arrowUpRight" size={13} />
+            </button>
+          )}
           <p className="label hero__where">
             {where.map((w) => (
               <span key={w}>{w}</span>
@@ -70,9 +84,15 @@ export function Hero({ resume, onDownloadCv }: { resume: Resume; onDownloadCv: (
             <a className="pill" href="#projects">
               Explore Projects <Icon name="arrowUpRight" size={15} />
             </a>
-            <button className="text-link" onClick={onDownloadCv}>
-              Download CV <Icon name="download" size={15} />
-            </button>
+            {isExample ? (
+              <button className="text-link" onClick={onUpload}>
+                Upload your CV <Icon name="upload" size={15} />
+              </button>
+            ) : (
+              <button className="text-link" onClick={onDownloadCv}>
+                Download CV <Icon name="download" size={15} />
+              </button>
+            )}
           </div>
 
           <div className="hero__counter" ref={countRef}>

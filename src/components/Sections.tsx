@@ -216,6 +216,15 @@ export function ProcessSection({ resume }: { resume: Resume }) {
       <div className="process__earth" aria-hidden>
         <img src={earth} alt="" />
         <span className="process__lights" />
+        {/* sunrise over the horizon: the disc climbs out from behind the planet, then the rim and flare light up */}
+        <span className="sunrise">
+          <span className="sunrise__clip">
+            <span className="sunrise__disc" />
+          </span>
+          <span className="sunrise__rim" />
+          <span className="sunrise__flare" />
+          <span className="sunrise__rays" />
+        </span>
       </div>
 
       <div className="wrap process__grid">

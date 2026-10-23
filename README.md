@@ -10,6 +10,8 @@ Everything runs in the browser. The CV is read client-side and never sent to a s
 
 ## How it works
 
+0. **Example first** — the page opens on the full design filled with neutral placeholder text
+   (`src/data/placeholder.ts`: “Your Name”, “Your Role”, …) and an **Upload CV** button.
 1. **Upload** — drag a CV onto the drop zone, or try the bundled sample (`src/data/sample-cv.txt`, a fictional candidate).
 2. **Read** — PDF text comes from pdf.js, Word files from mammoth; both load only when needed.
 3. **Parse** — `src/lib/parseResume.ts` splits the text into sections (Profile, Experience, Education,
@@ -17,6 +19,7 @@ Everything runs in the browser. The CV is read client-side and never sent to a s
    from the date ranges, counting overlapping jobs once.
 4. **Review** — the candidate checks what was found and fixes anything before the dashboard is built.
 5. **Dashboard** — saved to `localStorage`, so it is still there on the next visit.
+   The gear menu can go **Back to the example** at any time.
 
 ## What the dashboard shows
 
@@ -41,6 +44,7 @@ Everything runs in the browser. The CV is read client-side and never sent to a s
 | Career steps | Career path | the active step lights up and its line fills, then hands over to the next (pauses on hover) |
 | Wave panel | Hero | canvas wireframe surface that drifts and swells (`WaveField.tsx`) |
 | Hardware photo | Hero | slow hover, light beam and a scan line; follows the pointer |
+| Rising sun | Career path / earth | the sun climbs out from behind the planet (clipped at the horizon), the atmosphere rim and a lens flare light up, faint rays turn |
 | Floating module, twinkling cities | Profile, sign-off | CSS keyframes |
 
 All motion respects `prefers-reduced-motion`.
@@ -71,7 +75,8 @@ npm run build:single # one self-contained index.html in dist-single/
 
 ```
 src/
-  App.tsx                 upload → reading → review → dashboard
+  App.tsx                 example → upload → reading → review → dashboard
+  data/placeholder.ts     the general example profile shown before any upload
   lib/
     extractText.ts        PDF / DOCX / TXT → text
     parseResume.ts        text → Resume (+ parseResume.test.ts)
